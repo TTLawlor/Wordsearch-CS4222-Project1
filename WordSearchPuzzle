@@ -1,29 +1,35 @@
 
-
 import java.util.*;
 public class WordSearchPuzzle {
-    private char[][] puzzle ;
-    private List<String> puzzleWords ;
-    double dimensions;
     
+    private char[][] puzzle;
+    private List<String> puzzleWords = new ArrayList<>(); 
+    
+    int dimensions;
+    int length = 0;
+    double sum;
+    //"green", "blue", "red", "orange"
     public WordSearchPuzzle(List<String> userSpecifiedWords) {
          // puzzle generation using user specified words
          // The user passes in a list of words to be used
          // for generating the word search grid.
+         //Scanner input = new Scanner(System.in);
+         //puzzleWords.add(input.next());
             for(int i = 0; i < userSpecifiedWords.size(); i++)  {
                 puzzleWords.add(userSpecifiedWords.get(i));
             }
             
             
-            int length = 0;
-            double sum;
-            for(String str : userSpecifiedWords) {
+            for(String str : puzzleWords) {
                 length = length + str.length();
             }
-            sum = length*1.5;
-            dimensions = Math.sqrt(sum);
+            sum = length*1.75;
+            dimensions = (int)Math.ceil(Math.sqrt(sum));
+            System.out.println(dimensions);
+            
     }
-
+    
+    
     public WordSearchPuzzle(String wordFile, int wordCount,
                               int shortest, int longest)      {
         // puzzle generation using words from a file
@@ -38,9 +44,11 @@ public class WordSearchPuzzle {
         // SO, using the words in the file randomly select
         // wordCount words with lengths between shortest
         // and longest.
-
-    }
-
+        String words = " ";
+        for(int i = 0; i < wordCount; i++)  {
+           // words = M
+        }
+     }
       // The dimensions of the puzzle grid should be set
       // by summing the lengths of the words being used in the
       // puzzle and multiplying the sum by 1.5 or 1.75
@@ -52,15 +60,32 @@ public class WordSearchPuzzle {
       // grid dimensions by getting the square root (rounded up)
       // of the character total.
     //
-      // You will also need to add the methods specified below
+      // You will also need to add the methods specified below.
       
-      public List<String> getWordSearchList(){
+    public List<String> getWordSearchList(){
+          for(int i = 0; i < puzzleWords.size(); i++){
+              System.out.println(puzzleWords.get(i).toUpperCase());
+           }
           return puzzleWords;
-      }
+    }
        
-      public char[][] getPuzzleAsGrid(){
+    public char[][] getPuzzleAsGrid(){
+          String alphabet = "abcdefghijklmnopqrstuvwxyz";
+          //char[][] puzzle = new char[dimensions][dimensions];
+          
+          System.out.println("PUZZLE - random characters");
+          System.out.println("------");
+          
+          for(int r = 0; r < dimensions; r++){
+             for(int c = 0; c < dimensions; c++){
+                 int random = (int)(Math.random()* alphabet.length());
+                 puzzle[r][c] = alphabet.toUpperCase().charAt(random);
+                 System.out.print(puzzle[r][c]);
+                }
+              System.out.println();            
+                }
           return puzzle;
-        }
+    }
         
       public String getPuzzleAsString(){
          String puzzleAsString = " ";
