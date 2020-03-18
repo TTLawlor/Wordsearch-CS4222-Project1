@@ -1,14 +1,14 @@
 import java.util.*;
-public class Driver1
+public class Driver2
 {
     
     public static void main(String[] args) {
         System.out.println("CS4222 Project");
         //need two instances at the least, then Output information.
         
-        List<String> userSpecifiedWords = Arrays.asList("Blue", "Green", "Black", "Red");
         
-        WordSearchPuzzle instance = WordSearchPuzzle(userSpecifiedWords);
+        List<String> userSpecifiedWords =  Arrays.asList("green", "blue", "red", "orange");
+        WordSearchPuzzle instance = new WordSearchPuzzle(userSpecifiedWords);
         
         instance.getWordSearchList();
         instance.getPuzzleAsGrid();
