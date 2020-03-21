@@ -1,13 +1,16 @@
 
+
 import java.util.*;
 public class WordSearchPuzzle {
     
     private char[][] puzzle;
-    private List<String> puzzleWords = new ArrayList<>(); 
+    private List<String> puzzleWords; 
     
     int dimensions;
     int length = 0;
     double sum;
+    char randomDirection;
+    
     //"green", "blue", "red", "orange"
     public WordSearchPuzzle(List<String> userSpecifiedWords) {
          // puzzle generation using user specified words
@@ -15,17 +18,19 @@ public class WordSearchPuzzle {
          // for generating the word search grid.
          //Scanner input = new Scanner(System.in);
          //puzzleWords.add(input.next());
-            for(int i = 0; i < userSpecifiedWords.size(); i++)  {
-                puzzleWords.add(userSpecifiedWords.get(i));
-            }
+         //userSpecifiedWords =  Arrays.asList();
+         puzzleWords = new ArrayList<>();
+         for(int i = 0; i < userSpecifiedWords.size(); i++)  {
+             puzzleWords.add(userSpecifiedWords.get(i));
+         }
             
             
-            for(String str : puzzleWords) {
-                length = length + str.length();
-            }
+         for(String str : puzzleWords) {
+             length = length + str.length();
+         }
             sum = length*1.75;
             dimensions = (int)Math.ceil(Math.sqrt(sum));
-            System.out.println(dimensions);
+            System.out.println("Dimensions = " + dimensions);
             
     }
     
@@ -48,57 +53,152 @@ public class WordSearchPuzzle {
         for(int i = 0; i < wordCount; i++)  {
            // words = M
         }
-     }
-      // The dimensions of the puzzle grid should be set
-      // by summing the lengths of the words being used in the
-      // puzzle and multiplying the sum by 1.5 or 1.75
-      // or some other (appropriate) scaling factor to
-      // ensure that the grid will have enough additional
-      // characters to obscure the puzzle words. Once
-      // you have calculated how many characters you are
-      // going to have in the grid you can calculate the
-      // grid dimensions by getting the square root (rounded up)
-      // of the character total.
-    //
-      // You will also need to add the methods specified below.
-      
+    }
+
+     
     public List<String> getWordSearchList(){
-          for(int i = 0; i < puzzleWords.size(); i++){
-              System.out.println(puzzleWords.get(i).toUpperCase());
-           }
+          // for(int i = 0; i < puzzleWords.size(); i++){
+              // //puzzleWords.toString();
+              // //puzzleWords = puzzleWords.get(i).toUpperCase();
+              // System.out.println(puzzleWords.get(i).toUpperCase());
+           // }
+          System.out.println(puzzleWords);
           return puzzleWords;
     }
-       
+      
+    
     public char[][] getPuzzleAsGrid(){
           String alphabet = "abcdefghijklmnopqrstuvwxyz";
-          //char[][] puzzle = new char[dimensions][dimensions];
-          
-          System.out.println("PUZZLE - random characters");
-          System.out.println("------");
+          puzzle = new char[dimensions][dimensions];
           
           for(int r = 0; r < dimensions; r++){
              for(int c = 0; c < dimensions; c++){
                  int random = (int)(Math.random()* alphabet.length());
                  puzzle[r][c] = alphabet.toUpperCase().charAt(random);
-                 System.out.print(puzzle[r][c]);
-                }
-              System.out.println();            
-                }
+                 System.out.print(puzzle[r][c]);   
+             }
+             System.out.println();   
+          }
+            
           return puzzle;
     }
-        
-      public String getPuzzleAsString(){
+    
+    
+    public String getPuzzleAsString(){
          String puzzleAsString = " ";
-         for(int r = 0; r < puzzle.length; r++){
-             for(int c = 0; c < puzzle[0].length; c++){
-                 puzzleAsString = puzzleAsString + puzzle[r][c];
-                }
-             puzzleAsString = puzzleAsString + "\n";
-            }
+         puzzleAsString = Arrays.toString(puzzle);
+         for(int r = 0; r < dimensions; r++){
+                 puzzleAsString = Arrays.toString(puzzle[r]) + "\n";
+                 System.out.print(puzzleAsString);
+             }
+            
          return puzzleAsString;
-        }
+    }
         
-      public void showWordSearchPuzzle(boolean hide){
-          
+    
+       
+    public void generateWordSearchPuzzle(){
+        
+        String direction = "UDLR";
+        int i, r, c, random;
+        char[][] wordPuzzle = new char[dimensions][dimensions];
+        for(i = 0; i < puzzleWords.size(); i++){ 
+           String word = puzzleWords.get(i).toUpperCase();
+           random = (int)(Math.random()*direction.length());
+           randomDirection = direction.charAt(random);
+           int randomCol = (int)(Math.random()*dimensions);
+           int randomRow = (int)(Math.random()*dimensions);
+           System.out.println(word);
+           System.out.println(random);
+           System.out.println(randomDirection);
+           if(direction == "U" ){
+               for(r = randomRow; r > 0; r--);
+                   // for(c = 0; c < dimensions; c++){
+                        for(i = 0; i < word.length(); i++){
+                           wordPuzzle[r][randomCol] = word.charAt(i);
+                           r--;
+                           System.out.print(word.charAt(i));
+                           System.out.print(wordPuzzle[r][randomCol]);
+                        } 
+                   // }
+               //}
+           } else if(direction == "D"){
+                for(r = randomRow; r < dimensions; r++);
+                   //for(c = 0; c < dimensions; c++){
+                       for(i = 0; i < word.length(); i++){
+                           wordPuzzle[r][randomCol] = word.charAt(i);
+                           r++;
+                           System.out.print(word.charAt(i));
+                           System.out.print(wordPuzzle[r][randomCol]);
+                        } 
+                    //}
+                
+           } else if(direction == "R"){
+               //for(r = 0; r < dimensions; r++){
+                   for(c = randomCol; c > 0; c--);
+                       for(i = 0; i < word.length(); i++){
+                           wordPuzzle[randomRow][c] = word.charAt(i);  
+                           c--;
+                           System.out.print(word.charAt(i));
+                           System.out.print(wordPuzzle[randomRow][c]);
+                        } 
+                    //}
+               //}
+            } else if(direction == "L"){
+               //for(r = 0; r < dimensions; r++){
+                   for(c = randomCol; c < dimensions; c++);
+                       for(i = 0; i < word.length(); i++){
+                           wordPuzzle[randomRow][c] = word.charAt(i);  
+                           c++;
+                           System.out.print(word.charAt(i));
+                           System.out.print(wordPuzzle[randomRow][c]);
+                        }
+                    //} 
+               //}
+            }
         }
+         
+        for(r = 0; r < dimensions; r++){
+             for(c = 0; c < dimensions; c++){
+                if(wordPuzzle[r][c] == ' '){
+                 wordPuzzle[r][c] = puzzle[r][c];
+                }
+                System.out.print(wordPuzzle[r][c]);
+             }
+             System.out.println();            
+          }
+    
+    }
+    
+    public void showWordSearchPuzzle(boolean hide){
+        Collections.sort(puzzleWords);
+        System.out.println("PUZZLE - random characters");
+        System.out.println("------");
+        
+        if(hide == false){
+             
+             for(int r = 0; r < dimensions; r++){
+                for(int c = 0; c < dimensions; c++){
+                    System.out.print(puzzle[r][c]);
+                }
+                 System.out.println();            
+             }
+             System.out.println();
+             for(int i = 0; i < puzzleWords.size(); i++){ 
+                 System.out.print(puzzleWords.get(i).toUpperCase());
+                 System.out.println(randomDirection);
+             }
+        }else{
+             for(int r = 0; r < dimensions; r++){
+                for(int c = 0; c < dimensions; c++){
+                     System.out.print(puzzle[r][c]);
+                }
+                 System.out.println();            
+             }
+             System.out.println();
+             for(int i = 0; i < puzzleWords.size(); i++){ 
+                 System.out.println(puzzleWords.get(i).toUpperCase());
+             }
+        }
+    }
 }
