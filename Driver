@@ -4,15 +4,23 @@ public class Driver2
     
     public static void main(String[] args) {
         System.out.println("CS4222 Project");
-        //need two instances at the least, then Output information.
         
         
-        List<String> userSpecifiedWords =  Arrays.asList("green", "blue", "red", "orange");
+        List<String> userSpecifiedWords =  Arrays.asList("green", "blue", "red", "orange", "yellow", "purple");
+        //List<String> userSpecifiedWords =  Arrays.asList();
         WordSearchPuzzle instance = new WordSearchPuzzle(userSpecifiedWords);
         
+        System.out.println();
         instance.getWordSearchList();
+        System.out.println();
         instance.getPuzzleAsGrid();
-        instance.getPuzzleAsString();
-        
+        System.out.println();
+        //instance.getPuzzleAsString();
+        //System.out.println();
+        //instance.showWordSearchPuzzle(true);
+        //System.out.println();
+        //instance.showWordSearchPuzzle(false);
+        //System.out.println();
+        instance.generateWordSearchPuzzle();
     }
 }
