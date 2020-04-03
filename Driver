@@ -22,5 +22,21 @@ public class Driver2
         //instance.showWordSearchPuzzle(false);
         //System.out.println();
         instance.generateWordSearchPuzzle();
+        
+        WordSearchPuzzle instance2 = new WordSearchPuzzle("words.txt", 10, 4, 7);
+        
+        
+        System.out.println();
+        instance2.getWordSearchList();
+        System.out.println();
+        instance2.getPuzzleAsGrid();
+        System.out.println();
+        instance2.getPuzzleAsString();
+        System.out.println();
+        instance2.generateWordSearchPuzzle();
+        System.out.println();
+        instance2.showWordSearchPuzzle(true);
+        System.out.println();
+        instance2.showWordSearchPuzzle(false);
     }
 }
