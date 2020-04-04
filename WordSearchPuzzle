@@ -2,9 +2,9 @@
 import java.util.LinkedList ;
 import java.io.* ;
 import java.util.*;
-public class WordSearchPuzzle {
+public class WordSearchPuzzle{
     
-    private char[][] puzzle;
+    private char[][] puzzle; 
     char[][] wordPuzzle;
     private List<String> puzzleWords; 
     List<String> wordDirection = new ArrayList<String>();
@@ -24,7 +24,7 @@ public class WordSearchPuzzle {
          for(String str : puzzleWords) {
              length = length + str.length();
          }
-         sum = length*1.75;
+         sum = length*2.5;
          dimensions = (int)Math.ceil(Math.sqrt(sum));
          System.out.println("Dimensions = " + dimensions);
             
@@ -45,7 +45,6 @@ public class WordSearchPuzzle {
                 wordsRead++;
                 if(aWord.length() <= longest && aWord.length() >= shortest) {
                     chosenWords.add(aWord.toUpperCase());
-                    
                 }
                 aWord = aBufferReader.readLine() ;
             }
@@ -57,7 +56,6 @@ public class WordSearchPuzzle {
                 words.add(chosenWords.get(random).toUpperCase());
                 chosenWords.remove(random);
             }
-            System.out.println(words);
         }
         catch(IOException x) {
             System.out.println("Error accessing input file!");
@@ -71,9 +69,9 @@ public class WordSearchPuzzle {
         for(String str : puzzleWords) {
             length = length + str.length();
         }
-         sum = length*1.75;
-         dimensions = (int)Math.ceil(Math.sqrt(sum));
-         System.out.println("Dimensions = " + dimensions);
+        sum = length*2.5;
+        dimensions = (int)Math.ceil(Math.sqrt(sum));
+        System.out.println("Dimensions = " + dimensions);
     }
 
      
@@ -101,7 +99,6 @@ public class WordSearchPuzzle {
     
     
     public String getPuzzleAsString(){
-         char[] arr = new char[dimensions];
          String puzzleAsString = "";
          for(int r = 0; r < dimensions; r++){
              //puzzleAsString = puzzleAsString + Arrays.toString(puzzle[r]) + "\n";
@@ -115,11 +112,10 @@ public class WordSearchPuzzle {
     public void generateWordSearchPuzzle(){
         Collections.sort(puzzleWords);
         String direction = "UDLR";
-        int i, j, r, c, random, randomRow, randomCol, spaces, row, col;
+        int i, j, r, c, random, randomRow, randomCol, spaces, row, col, endOfWord;
         
         wordPuzzle = new char[dimensions][dimensions];
         char randomDirection;
-        
         
         for(r = 0; r < dimensions; r++){
            for(c = 0; c < dimensions; c++){
@@ -127,12 +123,12 @@ public class WordSearchPuzzle {
            }
         }
          
-            
         for(j = 0; j < puzzleWords.size(); j++){ 
            
            String word = puzzleWords.get(j).toUpperCase();
            random = (int)(Math.random()*direction.length());
            randomDirection = direction.charAt(random);
+           
            
            if(randomDirection == 'U'){
                int maxBoundaries = dimensions - word.length();
@@ -140,22 +136,32 @@ public class WordSearchPuzzle {
                randomRow = (int)(Math.random()*maxBoundaries + word.length()-1);
                wordDirection.add("Up");
                boolean found = false;
-               do{
-                   for (spaces = 0; spaces < word.length(); spaces++){
-                       row = randomRow;
-                       if (wordPuzzle[row][randomCol] == ' '){
-                           row--;
+               endOfWord = randomRow - (word.length()-1);
+               while(!found){
+                   spaces = 0;
+                   System.out.println(word + " " + word.length());
+                   System.out.println("row " + randomRow);
+                   for (r = randomRow; r >= endOfWord; r--){
+                       if (wordPuzzle[r][randomCol] == ' '){
+                           spaces++;
+                           System.out.println("spaces " + spaces);
                        }else{
-                           spaces = word.length()+1; 
+                           spaces = 0; 
+                           System.out.println("spaces " + spaces);
+                           break;
                        }
                    } 
-                   if(spaces == word.length()){
+                   if(spaces > 0){
                        found = true;
+                       break;
                    }else{
-                        randomCol = (int)(Math.random()*dimensions);
-                        randomRow = (int)(Math.random()*maxBoundaries + word.length()-1);
+                        randomCol++;
+                        if(randomCol == dimensions) {
+                            randomCol = 0;
+                        }
+                        found = false;
                    }
-               }while(false);
+               }
                
                position.add(String.valueOf(randomRow) + "," + String.valueOf(randomCol)); 
                
@@ -171,32 +177,41 @@ public class WordSearchPuzzle {
                int maxBoundaries = dimensions - word.length();
                randomCol = (int)(Math.random()*dimensions);
                randomRow = (int)(Math.random()*maxBoundaries);
+               endOfWord = randomRow + (word.length()-1);
                
-               do{
-                    for (spaces = 0; spaces < word.length(); spaces++){
-                        row = randomRow;
-                        if (wordPuzzle[row][randomCol] == ' '){
-                           row++;
+               while(!found){
+                    spaces = 0;
+                    System.out.println(word + " " + word.length());
+                    System.out.println("row " + randomRow);
+                    for (r = randomRow; r <= endOfWord; r++){
+                        if (wordPuzzle[r][randomCol] == ' '){
+                           spaces++;
+                           System.out.println("spaces " + spaces);
                         }else{
-                           spaces = word.length()+1; 
+                           spaces = 0; 
+                           System.out.println("spaces " + spaces);
+                           break;
                         }    
-                            
-                    }   
-                    if(spaces == word.length()){
-                           found = true;
+                    }  
+                    
+                    if(spaces > 0){
+                        found = true;
+                        break;
                     }else{
-                           randomCol = (int)(Math.random()*dimensions);
-                           randomRow = (int)(Math.random()*maxBoundaries);
+                        randomCol++;
+                        if(randomCol == dimensions) {
+                            randomCol = 0;
+                        }
+                        found = false;
                     }
-               }while(false);
+               }
                
                position.add(String.valueOf(randomRow) + "," + String.valueOf(randomCol));
                
-                
                for(i = 0; i < word.length(); i++){
                    wordPuzzle[randomRow][randomCol] = word.charAt(i);
                    randomRow++;
-                        } 
+               } 
                     
            } else if(randomDirection == 'R'){
                boolean found = false;
@@ -205,25 +220,34 @@ public class WordSearchPuzzle {
                int maxBoundaries = dimensions - word.length();
                randomCol = (int)(Math.random()*maxBoundaries);
                randomRow = (int)(Math.random()*dimensions);
-              
-               
-               do{
-                   for (spaces = 0; spaces < word.length(); spaces++){
-                       col = randomCol;
-                       if (wordPuzzle[randomRow][col] == ' '){
-                           col++;
+               endOfWord = randomCol + (word.length()-1);
+               while(!found){
+                   spaces = 0;
+                   System.out.println(word + " " + word.length());
+                   System.out.println("col " + randomCol);
+                   for (c = randomCol; c <= endOfWord; c++){
+                       System.out.println("col " + c);
+                       if (wordPuzzle[randomRow][c] == ' '){
+                           spaces++;
+                           System.out.println("spaces " + spaces);
+                           
                        }else{
-                           spaces = word.length()+1; 
+                           spaces = 0; 
+                           System.out.println("spaces " + spaces);
+                           break;
                        }    
-                          
                    }
-                   if(spaces == word.length()){
-                           found = true;
-                       }else{
-                           randomCol = (int)(Math.random()*maxBoundaries);
-                           randomRow = (int)(Math.random()*dimensions);
-                       }
-               }while(false);
+                   if(spaces > 0){
+                        found = true;
+                   }else{
+                        randomRow++;
+                        if(randomRow == dimensions) {
+                            randomRow = 0;
+                        }
+                        found = false;
+                   }
+               }
+               
                position.add(String.valueOf(randomRow) + "," + String.valueOf(randomCol));
                
                for(i = 0; i < word.length(); i++){
@@ -238,23 +262,32 @@ public class WordSearchPuzzle {
                 int maxBoundaries = dimensions - word.length();
                 randomCol = (int)(Math.random()*maxBoundaries + word.length()-1);
                 randomRow = (int)(Math.random()*dimensions);
-                
-                do{
-                    for (spaces = 0; spaces < word.length(); spaces++){
-                        col = randomCol;
-                        if (wordPuzzle[randomRow][col] == ' '){
-                            col--;
+                endOfWord = randomCol - (word.length()-1);
+                while(!found){
+                    spaces = 0;
+                    System.out.println(word + " " + word.length());
+                    System.out.println("col " + randomCol);
+                    for (c = randomCol; c >= endOfWord; c--){
+                        if (wordPuzzle[randomRow][c] == ' '){
+                            spaces++;
+                            System.out.println("spaces " + spaces);
                         }else{
-                            spaces = word.length()+1; 
+                            spaces = 0; 
+                            System.out.println("spaces " + spaces);
+                            break;
                         }  
                     }
-                    if(spaces == word.length()){
+                    if(spaces > 0){
                             found = true;
+                            break;
                         }else{
-                            randomCol = (int)(Math.random()*maxBoundaries + word.length()-1);
-                            randomRow = (int)(Math.random()*dimensions);
+                            randomRow++;
+                            if(randomRow == dimensions) {
+                                randomRow = 0;
+                            }
+                            found = false;
                         }
-                }while(false);
+                }
                 
                 position.add(String.valueOf(randomRow) + "," + String.valueOf(randomCol));
                 
@@ -268,13 +301,12 @@ public class WordSearchPuzzle {
         
         for(r = 0; r < dimensions; r++){
              for(c = 0; c < dimensions; c++){
-                if(wordPuzzle[r][c] == ' '){
-                 wordPuzzle[r][c] = puzzle[r][c];
-                }
+                // if(wordPuzzle[r][c] == ' '){
+                 // wordPuzzle[r][c] = puzzle[r][c];
+                // }
                 System.out.print(wordPuzzle[r][c] + " ");
              }
-             System.out.println();            
-          
+             System.out.println();          
         }
     }
     
