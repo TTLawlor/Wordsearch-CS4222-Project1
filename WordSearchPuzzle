@@ -141,7 +141,7 @@ public class WordSearchPuzzle{
                while(!found){
                    spaces = 0;
                    for (r = randomRow; r >= endOfWord; r--){
-                       if (wordPuzzle[r][randomCol] == ' '){
+                       if (wordPuzzle[r][randomCol] == ' ' ){
                            spaces++;
                        }else{
                            spaces = 0; 
@@ -155,6 +155,7 @@ public class WordSearchPuzzle{
                         randomCol++;
                         if(randomCol == dimensions) {
                             randomCol = 0;
+                            randomRow = (int)(Math.random()*maxBoundaries + word.length()-1);
                         }
                         found = false;
                    }
@@ -191,6 +192,7 @@ public class WordSearchPuzzle{
                         randomCol++;
                         if(randomCol == dimensions) {
                             randomCol = 0;
+                            randomRow = (int)(Math.random()*maxBoundaries);
                         }
                         found = false;
                     }
@@ -227,6 +229,7 @@ public class WordSearchPuzzle{
                         randomRow++;
                         if(randomRow == dimensions) {
                             randomRow = 0;
+                            randomCol = (int)(Math.random()*maxBoundaries);
                         }
                         found = false;
                    }
@@ -264,6 +267,7 @@ public class WordSearchPuzzle{
                             randomRow++;
                             if(randomRow == dimensions) {
                                 randomRow = 0;
+                                randomCol = (int)(Math.random()*maxBoundaries + word.length()-1);
                             }
                             found = false;
                         }
@@ -307,7 +311,7 @@ public class WordSearchPuzzle{
              
              for(int i = 0; (i < puzzleWords.size()) && (i < wordDirection.size()); i++){ 
                  System.out.print(puzzleWords.get(i).toUpperCase() + " ");
-                 System.out.println(position.get(i));
+                 System.out.println("[" + position.get(i) + "]");
                  System.out.println("Direction: " + wordDirection.get(i) + "\n");
              }
         }else{
